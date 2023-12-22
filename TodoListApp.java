@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.border.EmptyBorder;
 
 public class TodoListApp extends JFrame {
 
@@ -21,7 +22,7 @@ public class TodoListApp extends JFrame {
 
         todoListModel = new DefaultListModel<>();
         todoList = new JList<>(todoListModel);
-        taskInput = new JTextField();
+        taskInput = new JTextField("Enter your task here");
 
         JButton addButton = createResizedButton("Add Task", "add.png", 24, 24);
         JButton removeButton = createResizedButton("Remove Task", "remove.png", 24, 24);
@@ -43,16 +44,27 @@ public class TodoListApp extends JFrame {
 
         // Create layout
         JPanel panel = new JPanel(new BorderLayout());
+        
+        // Set the background color
+        panel.setBackground(new Color(255, 255, 240));  // Example: Ivory background
+
+        // Set a custom font for the components
+        Font customFont = new Font("Arial", Font.PLAIN, 14);
+        taskInput.setFont(customFont);
+        addButton.setFont(customFont);
+        removeButton.setFont(customFont);
+
         panel.add(new JScrollPane(todoList), BorderLayout.CENTER);
 
         JPanel inputPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(10, 10, 10, 10);
 
         // Add labels for better understanding
         JLabel taskLabel = new JLabel("Task:");
+        taskLabel.setFont(customFont);
         inputPanel.add(taskLabel, gbc);
         gbc.gridx = 1;
         inputPanel.add(taskInput, gbc);
@@ -64,9 +76,15 @@ public class TodoListApp extends JFrame {
         gbc.gridx = 1;
         inputPanel.add(removeButton, gbc);
 
+        // Set a custom background color for the input panel
+        inputPanel.setBackground(new Color(220, 220, 255));  // Example: Lavender background
+
         panel.add(inputPanel, BorderLayout.SOUTH);
 
-        add(panel);
+        // Set the content pane's background color
+        panel.setOpaque(true);
+
+        setContentPane(panel);
     }
 
     private JButton createResizedButton(String text, String imagePath, int width, int height) {
@@ -94,7 +112,7 @@ public class TodoListApp extends JFrame {
         if (selectedIndex != -1) {
             int option = JOptionPane.showConfirmDialog(this,
                     "Are you sure you want to remove this task?",
-                    "Confirm Removal", JOptionPane.YES_NO_OPTION);
+                    "Confirm Removal", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (option == JOptionPane.YES_OPTION) {
                 todoListModel.remove(selectedIndex);
             }
